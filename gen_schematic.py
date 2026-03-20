@@ -13,12 +13,19 @@ Pin mapping:
   PMW3360 Breakout (8-pin):
     1:GND  2:VCC  3:NC  4:MOTION  5:SCLK  6:MOSI  7:MISO  8:CS
 
+  Battery connector J2 (2-pin JST-PH):
+    1:B+  2:B-
+
 SPI connections:
   MOSI  : SuperMini pin14 (P0.10)  → PMW3360 pin6
   MISO  : SuperMini pin15 (P1.11)  → PMW3360 pin7
   SCK   : SuperMini pin16 (P1.13)  → PMW3360 pin5
   NCS   : SuperMini pin12 (P1.06)  → PMW3360 pin8
   MOTION: SuperMini pin11 (P1.04)  → PMW3360 pin4
+
+Battery connections:
+  B+    : J2 pin1  → SuperMini pin24 (BATIN/P0.04) via BATIN net
+  B-    : J2 pin2  → GND
 """
 
 import uuid
@@ -44,6 +51,14 @@ J1_PX   = J1_BW + J1_PL    # = 8.89
 J1_Y0   = 8.89
 J1_STEP = 2.54
 
+# Battery connector J2: 2-pin, all on left side
+J2_X, J2_Y = 130.0, 135.0  # placed below-right of U1
+J2_BW   = 3.81
+J2_PL   = 5.08
+J2_PX   = J2_BW + J2_PL    # = 8.89
+J2_Y0   = 1.27
+J2_STEP = 2.54
+
 
 def sm_left_y(n):   # local y for SuperMini left-side pin n (1-12)
     return SM_Y0 - (n - 1) * SM_STEP
@@ -53,6 +68,9 @@ def sm_right_y(n):  # local y for SuperMini right-side pin n (13-24)
 
 def j1_y(n):        # local y for PMW3360 pin n (1-8)
     return J1_Y0 - (n - 1) * J1_STEP
+
+def j2_y(n):        # local y for Battery connector pin n (1-2)
+    return J2_Y0 - (n - 1) * J2_STEP
 
 
 def pin(angle, x, y, length, name, number, ptype="bidirectional"):
@@ -161,6 +179,29 @@ def lib_pmw3360():
     return "".join(lines)
 
 
+def lib_battery_connector():
+    """Define 2-pin battery connector symbol (JST-PH or similar)."""
+    bh = J2_Y0 + J2_STEP / 2
+    px = J2_PX
+    lines = []
+    lines.append('    (symbol "Battery_Connector_2pin"\n')
+    lines.append('      (in_bom yes) (on_board yes)\n')
+    lines.append('      (property "Reference" "J" (at 0 0 0)\n')
+    lines.append('        (effects (font (size 1.27 1.27))))\n')
+    lines.append('      (property "Value" "Battery_JST-PH_2pin" (at 0 -2.54 0)\n')
+    lines.append('        (effects (font (size 1.27 1.27))))\n')
+    lines.append('      (property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical" (at 0 -5.08 0)\n')
+    lines.append('        (effects (font (size 1.27 1.27)) (hide yes)))\n')
+    lines.append('      (symbol "Battery_Connector_2pin_0_1"\n')
+    lines.append(f'        (rectangle (start {-J2_BW:.4f} {-bh:.4f}) (end {J2_BW:.4f} {bh:.4f})\n')
+    lines.append('          (stroke (width 0)) (fill (type background)))\n')
+    lines.append(pin(0, -px, j2_y(1), J2_PL, "B+", "1", "passive"))
+    lines.append(pin(0, -px, j2_y(2), J2_PL, "B-", "2", "passive"))
+    lines.append('      )\n')
+    lines.append('    )\n')
+    return "".join(lines)
+
+
 def lib_power_vcc():
     return """    (symbol "power:VCC"
       (power) (pin_names (offset 0)) (in_bom yes) (on_board yes)
@@ -236,6 +277,24 @@ def instance_pmw3360(x, y):
 """
 
 
+def instance_battery(x, y):
+    """Place Battery Connector J2 on the schematic."""
+    bh = J2_Y0 + J2_STEP / 2
+    ref_y = y - bh - 2.0
+    val_y = y + bh + 1.5
+    return f"""  (symbol (lib_id "Battery_Connector_2pin") (at {x:.4f} {y:.4f} 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no)
+    (uuid "{uid()}")
+    (property "Reference" "J2" (at {x:.4f} {ref_y:.4f} 0)
+      (effects (font (size 1.27 1.27))))
+    (property "Value" "Battery_JST-PH_2pin" (at {x:.4f} {val_y:.4f} 0)
+      (effects (font (size 1.27 1.27))))
+    (property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical" (at {x:.4f} {y:.4f} 0)
+      (effects (font (size 1.27 1.27)) (hide yes)))
+  )
+"""
+
+
 def power_sym(x, y, value, sym_id, rotation=0):
     return f"""  (symbol (lib_id "power:{value}") (at {x:.4f} {y:.4f} {rotation}) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
@@ -285,6 +344,10 @@ def j1_left_abs(n):
     """Absolute position of PMW3360 pin endpoint (n=1..8)."""
     return J1_X - J1_PX, J1_Y - j1_y(n)
 
+def j2_left_abs(n):
+    """Absolute position of Battery connector pin endpoint (n=1..2)."""
+    return J2_X - J2_PX, J2_Y - j2_y(n)
+
 
 def generate():
     parts = []
@@ -299,7 +362,7 @@ def generate():
     (comment 1 "SuperMini nRF52840 (nice!nano v2 compatible)")
     (comment 2 "PMW3360 Breakout Board (monkeypad/pmw3360-breakout)")
     (comment 3 "SPI: MOSI=P0.10  MISO=P1.11  SCK=P1.13  NCS=P1.06")
-    (comment 4 "MOTION=P1.04  VCC=3.3V from SuperMini pin21")
+    (comment 4 "MOTION=P1.04  VCC=3.3V from SuperMini pin21  BAT+=BATIN/P0.04")
   )
 """)
 
@@ -307,6 +370,7 @@ def generate():
     parts.append("  (lib_symbols\n")
     parts.append(lib_supermini())
     parts.append(lib_pmw3360())
+    parts.append(lib_battery_connector())
     parts.append(lib_power_vcc())
     parts.append(lib_power_gnd())
     parts.append("  )\n\n")
@@ -314,6 +378,7 @@ def generate():
     # ── Component instances ──────────────────────────────────────────────────
     parts.append(instance_supermini(U1_X, U1_Y))
     parts.append(instance_pmw3360(J1_X, J1_Y))
+    parts.append(instance_battery(J2_X, J2_Y))
 
     # ── Power symbols & wires for VCC ────────────────────────────────────────
     # U1 pin21 = VCC (right side)
@@ -395,9 +460,27 @@ def generate():
     parts.append(wire(motx_j1 - SPI_LABEL_LEN, moty_j1, motx_j1, moty_j1))
     parts.append(net_label("MOTION", motx_j1 - SPI_LABEL_LEN, moty_j1, 180))
 
+    # ── Battery connector J2 ─────────────────────────────────────────────────
+    BATT_LABEL_LEN = 5.08
+
+    # J2 pin1 B+ → net label BATIN
+    bp_x, bp_y = j2_left_abs(1)
+    parts.append(wire(bp_x - BATT_LABEL_LEN, bp_y, bp_x, bp_y))
+    parts.append(net_label("BATIN", bp_x - BATT_LABEL_LEN, bp_y, 180))
+
+    # J2 pin2 B- → GND
+    bm_x, bm_y = j2_left_abs(2)
+    parts.append(power_sym(bm_x - 2.54, bm_y, "GND", "#PWR07"))
+    parts.append(wire(bm_x - 2.54, bm_y, bm_x, bm_y))
+
+    # U1 pin24 BATIN/P0.04 (right side) → net label BATIN
+    bat_u1x, bat_u1y = u1_right_abs(24)
+    parts.append(wire(bat_u1x, bat_u1y, bat_u1x + BATT_LABEL_LEN, bat_u1y))
+    parts.append(net_label("BATIN", bat_u1x + BATT_LABEL_LEN, bat_u1y, 0))
+
     # ── No-connects for unused pins ──────────────────────────────────────────
     unused_left  = [1, 2, 5, 6, 7, 8, 9, 10]   # U1 left
-    unused_right = [13, 17, 18, 19, 20, 22, 24]  # U1 right
+    unused_right = [13, 17, 18, 19, 20, 22]     # U1 right (pin24 now used)
 
     for n in unused_left:
         x, y = u1_left_abs(n)
