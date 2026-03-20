@@ -139,14 +139,14 @@ def smd_pad(number, x, y, net_id, w=1.6, h=1.6):
 
 def fp_text(kind, text, x, y, layer="F.SilkS", size=0.8):
     return (
-        f'  (fp_text {kind} "{text}" (at {x:.4f} {y:.4f}) (layer "{layer}")\n'
+        f'  (fp_text {kind} "{text}" (at {x:.4f} {y:.4f}) (layer "{layer}") (uuid "{uid()}")\n'
         f'    (effects (font (size {size} {size}) (thickness 0.15))))\n'
     )
 
 def fp_line(x1, y1, x2, y2, layer="F.SilkS", w=0.12):
     return (
         f'  (fp_line (start {x1:.4f} {y1:.4f}) (end {x2:.4f} {y2:.4f}) '
-        f'(layer "{layer}") (width {w:.4f}))\n'
+        f'(stroke (width {w:.4f}) (type default)) (layer "{layer}"))\n'
     )
 
 def segment(x1, y1, x2, y2, net_id, layer="F.Cu", width=0.25):
@@ -157,7 +157,7 @@ def segment(x1, y1, x2, y2, net_id, layer="F.Cu", width=0.25):
 
 def gr_text(text, x, y, layer="F.SilkS", size=0.8, rot=0):
     return (
-        f'(gr_text "{text}" (at {x:.4f} {y:.4f} {rot}) (layer "{layer}")\n'
+        f'(gr_text "{text}" (at {x:.4f} {y:.4f} {rot}) (layer "{layer}") (uuid "{uid()}")\n'
         f'  (effects (font (size {size} {size}) (thickness 0.15))))\n'
     )
 
@@ -193,6 +193,16 @@ def fp_u1():
     ]:
         lines.append(fp_line(ax, ay, bx, by))
 
+    # F.CrtYd (courtyard) — KiCad 9 required
+    cyd_m = 0.25   # courtyard margin from silkscreen
+    cx1, cx2 = x1 - cyd_m, x2 + cyd_m
+    cy1, cy2 = y1 - cyd_m, y2 + cyd_m
+    for (ax, ay, bx, by) in [
+        (cx1, cy1, cx2, cy1), (cx2, cy1, cx2, cy2),
+        (cx2, cy2, cx1, cy2), (cx1, cy2, cx1, cy1)
+    ]:
+        lines.append(fp_line(ax, ay, bx, by, layer="F.CrtYd", w=0.05))
+
     # Pin 1 marker
     lines.append(fp_text("user", "1", U1_LEFT_X - 1.0, U1_Y_TOP, size=0.6))
     lines.append(fp_text("user", "13", U1_RIGHT_X + 1.0, U1_Y_TOP, size=0.6))
@@ -221,6 +231,15 @@ def fp_j1():
         (x2, y2, x1, y2), (x1, y2, x1, y1)
     ]:
         lines.append(fp_line(ax, ay, bx, by))
+    # F.CrtYd
+    cyd_m = 0.25
+    for (ax, ay, bx, by) in [
+        (x1-cyd_m, y1-cyd_m, x2+cyd_m, y1-cyd_m),
+        (x2+cyd_m, y1-cyd_m, x2+cyd_m, y2+cyd_m),
+        (x2+cyd_m, y2+cyd_m, x1-cyd_m, y2+cyd_m),
+        (x1-cyd_m, y2+cyd_m, x1-cyd_m, y1-cyd_m),
+    ]:
+        lines.append(fp_line(ax, ay, bx, by, layer="F.CrtYd", w=0.05))
     # Pin 1 marker
     lines.append(fp_text("user", "GND", j1_x(1), J1_Y + 2.0, size=0.5))
     lines.append(fp_text("user", "CS",  j1_x(8), J1_Y + 2.0, size=0.5))
@@ -242,9 +261,17 @@ def fp_j2():
     lines.append(thru_pad("1", j2_x(1), J2_Y, J2_NETS[1], drill=0.8, pad_d=1.6, shape="oval"))
     lines.append(thru_pad("2", j2_x(2), J2_Y, J2_NETS[2], drill=0.8, pad_d=1.6, shape="circle"))
 
-    # Silkscreen
+    # Silkscreen + F.CrtYd
     x1, x2 = j2_x(1) - 1.2, j2_x(2) + 1.2
     y1, y2 = J2_Y - 1.2, J2_Y + 1.2
+    cyd_m = 0.25
+    for (ax, ay, bx, by) in [
+        (x1-cyd_m, y1-cyd_m, x2+cyd_m, y1-cyd_m),
+        (x2+cyd_m, y1-cyd_m, x2+cyd_m, y2+cyd_m),
+        (x2+cyd_m, y2+cyd_m, x1-cyd_m, y2+cyd_m),
+        (x1-cyd_m, y2+cyd_m, x1-cyd_m, y1-cyd_m),
+    ]:
+        lines.append(fp_line(ax, ay, bx, by, layer="F.CrtYd", w=0.05))
     for (ax, ay, bx, by) in [
         (x1, y1, x2, y1), (x2, y1, x2, y2),
         (x2, y2, x1, y2), (x1, y2, x1, y1)
@@ -333,8 +360,8 @@ def generate():
     parts = []
 
     # ── KiCad PCB header ────────────────────────────────────────────────────
-    parts.append(f"""(kicad_pcb (version 20221018) (generator pcbnew)
-  (general (thickness 1.6) (legacy_teardrops no))
+    parts.append(f"""(kicad_pcb (version 20240108) (generator pcbnew) (generator_version "9.0")
+  (general (thickness 1.6))
   (paper "A4")
   (title_block
     (title "nRF52840 + PMW3360 PCB (Pro Micro form factor)")
@@ -345,27 +372,28 @@ def generate():
   )
 """)
 
-    # ── Layers ──────────────────────────────────────────────────────────────
+    # ── Layers (KiCad 9 standard layer numbers) ─────────────────────────────
     parts.append("""  (layers
     (0 "F.Cu" signal)
     (31 "B.Cu" signal)
+    (34 "B.Paste" user)
     (35 "F.Paste" user)
-    (36 "F.SilkS" user "F.Silkscreen")
-    (37 "B.SilkS" user "B.Silkscreen")
-    (38 "F.Mask" user)
-    (39 "B.Mask" user)
+    (36 "B.SilkS" user)
+    (37 "F.SilkS" user)
+    (38 "B.Mask" user)
+    (39 "F.Mask" user)
     (44 "Edge.Cuts" user)
     (45 "Margin" user)
-    (50 "F.Courtyard" user)
-    (51 "B.Courtyard" user)
-    (52 "F.Fab" user)
-    (53 "B.Fab" user)
+    (46 "B.CrtYd" user)
+    (47 "F.CrtYd" user)
+    (48 "B.Fab" user)
+    (49 "F.Fab" user)
   )
 """)
 
-    # ── Setup ────────────────────────────────────────────────────────────────
+    # ── Setup (KiCad 9 minimal) ──────────────────────────────────────────────
     parts.append("""  (setup
-    (pad_to_mask_clearance 0.05)
+    (pad_to_mask_clearance 0)
     (allow_soldermask_bridges_in_footprints no)
     (pcbplotparams
       (layerselection 0x00010fc_ffffffff)
@@ -392,7 +420,6 @@ def generate():
       (psa4output no)
       (plotreference yes)
       (plotvalue yes)
-      (plotfptext yes)
       (plotinvisibletext no)
       (sketchpadsonfab no)
       (subtractmaskfromsilk no)
@@ -411,7 +438,7 @@ def generate():
 
     # ── Board outline (Edge.Cuts) ────────────────────────────────────────────
     parts.append(f'  (gr_rect (start 0 0) (end {W:.4f} {H:.4f}) '
-                 f'(layer "Edge.Cuts") (width 0.05) (uuid "{uid()}"))\n\n')
+                 f'(stroke (width 0.05) (type default)) (layer "Edge.Cuts") (uuid "{uid()}"))\n\n')
 
     # ── Corner markers on silkscreen ─────────────────────────────────────────
     mark = 1.0
@@ -419,9 +446,9 @@ def generate():
         dx = mark if cx == 0 else -mark
         dy = mark if cy == 0 else -mark
         parts.append(f'  (gr_line (start {cx:.2f} {cy:.2f}) (end {cx+dx:.2f} {cy:.2f}) '
-                     f'(layer "F.SilkS") (width 0.12) (uuid "{uid()}"))\n')
+                     f'(stroke (width 0.12) (type default)) (layer "F.SilkS") (uuid "{uid()}"))\n')
         parts.append(f'  (gr_line (start {cx:.2f} {cy:.2f}) (end {cx:.2f} {cy+dy:.2f}) '
-                     f'(layer "F.SilkS") (width 0.12) (uuid "{uid()}"))\n')
+                     f'(stroke (width 0.12) (type default)) (layer "F.SilkS") (uuid "{uid()}"))\n')
 
     # ── Footprints ───────────────────────────────────────────────────────────
     parts.append(fp_u1())
