@@ -103,12 +103,14 @@ def j1_x(n):
     return J1_X0 + (n - 1) * PITCH
 
 # ─── J2 (2-pin JST-PH battery) ──────────────────────────────────────────────
+# Placed left-center between the two U1 pin rows
+# pin1(B+) at x=3.5, pin2(B-) at x=5.5, y=H/2=16.5mm
 J2_PITCH = 2.0          # JST-PH 2mm pitch
-J2_CX    = W / 2        # centre x = 9mm
-J2_Y     = 20.0
+J2_CX    = 4.5          # centre x: left-of-centre between rows
+J2_Y     = H / 2        # y: vertical centre of board = 16.5mm
 
 def j2_x(n):            # n=1 (B+), n=2 (B-)
-    return J2_CX + (n - 1.5) * J2_PITCH   # -1mm, +1mm around centre
+    return J2_CX + (n - 1.5) * J2_PITCH   # pin1=3.5mm, pin2=5.5mm
 
 J2_NETS = {1: 8, 2: 1}   # B+→BATIN, B-→GND
 
@@ -287,14 +289,18 @@ def fp_j2():
 # ─── Copper traces ───────────────────────────────────────────────────────────
 def traces():
     """
-    Routes simple, non-crossing traces on F.Cu.
-    Complex routes (NCS, MOTION, BATIN) left as ratsnest for user.
+    Routes all signal and power traces.
 
     F.Cu signal traces:
-      MOSI : J1[6]  → U1R pin14  (right-side, short)
-      MISO : J1[7]  → U1R pin15  (right-side, short)
-      SCK  : J1[5]  → U1R pin16  (right-side, medium)
-      VCC  : J1[2]  → U1R pin21  (vertical + horizontal)
+      MOSI  : J1[6]  → U1R pin14  (right-side, short)
+      MISO  : J1[7]  → U1R pin15  (right-side, short)
+      SCK   : J1[5]  → U1R pin16  (right-side, medium)
+      VCC   : J1[2]  → U1R pin21  (vertical + horizontal)
+      BATIN : J2[1]  → U1R pin24  (down then right, between rows)
+
+    B.Cu signal traces:
+      NCS    : J1[8]  → U1L pin12  (right edge → bottom → left)
+      MOTION : J1[4]  → U1L pin11  (vertical down then left)
     """
     segs = []
     W_SIG = 0.25    # signal trace width
@@ -324,6 +330,29 @@ def traces():
     mid_x = vx1                         # go vertical first, then horizontal
     segs.append(segment(vx1, vy1, mid_x, vy2, 2, width=W_PWR))
     segs.append(segment(mid_x, vy2, vx2, vy2, 2, width=W_PWR))
+
+    # ── BATIN: J2[1]=(3.5,16.5) → U1R24=(16.73,31.75)  [F.Cu] ─────────────
+    bx1, by1 = j2_x(1), J2_Y           # J2 pin1 (B+)
+    bx2, by2 = U1_RIGHT_X, u1_y(12)    # U1R pin24 = row index 12
+    segs.append(segment(bx1, by1, bx1, by2, 8, "F.Cu", W_SIG))  # vertical down
+    segs.append(segment(bx1, by2, bx2, by2, 8, "F.Cu", W_SIG))  # horizontal right
+
+    # ── NCS: J1[8]=(17.89,1.27) → U1L12=(1.27,31.75)  [B.Cu] ──────────────
+    # Route around right edge and bottom to avoid crossing MOSI/MISO/SCK
+    ncs_edge_x = 17.0       # right-edge routing x (1mm from board edge)
+    ncs_bot_y  = 32.0       # bottom routing y (1mm from board edge)
+    nx1, ny1 = j1_x(8), J1_Y           # J1 pin8 (CS)
+    nx2, ny2 = U1_LEFT_X, u1_y(12)     # U1L pin12 (NCS)
+    segs.append(segment(nx1, ny1, ncs_edge_x, ny1, 6, "B.Cu", W_SIG))  # to edge
+    segs.append(segment(ncs_edge_x, ny1, ncs_edge_x, ncs_bot_y, 6, "B.Cu", W_SIG))  # down
+    segs.append(segment(ncs_edge_x, ncs_bot_y, nx2, ncs_bot_y, 6, "B.Cu", W_SIG))  # left
+    segs.append(segment(nx2, ncs_bot_y, nx2, ny2, 6, "B.Cu", W_SIG))  # up to pin12
+
+    # ── MOTION: J1[4]=(7.73,1.27) → U1L11=(1.27,29.21)  [B.Cu] ────────────
+    mot_x = j1_x(4)                     # x = 7.73
+    mot_y = u1_y(11)                    # y = 29.21 (row index 11 = global pin11)
+    segs.append(segment(mot_x, J1_Y, mot_x, mot_y, 7, "B.Cu", W_SIG))   # vertical down
+    segs.append(segment(mot_x, mot_y, U1_LEFT_X, mot_y, 7, "B.Cu", W_SIG))  # left
 
     return "".join(segs)
 
@@ -485,6 +514,6 @@ if __name__ == "__main__":
     print(f"  J1 PMW3360  8-pin  : y={J1_Y:.2f}mm, x={j1_x(1):.2f}..{j1_x(8):.2f}mm (horizontal)")
     print(f"  J2 Battery  2-pin  : ({j2_x(1):.2f},{J2_Y:.2f}) & ({j2_x(2):.2f},{J2_Y:.2f})mm")
     print()
-    print("Routed traces (F.Cu): MOSI, MISO, SCK, VCC")
+    print("Routed traces (F.Cu): MOSI, MISO, SCK, VCC, BATIN")
+    print("Routed traces (B.Cu): NCS (right edge→bottom), MOTION (vertical→left)")
     print("GND copper fill     : B.Cu (entire board)")
-    print("Ratsnest (unrouted) : NCS, MOTION, BATIN  ← route manually in KiCad")
