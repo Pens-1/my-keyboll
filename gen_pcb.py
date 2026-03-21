@@ -355,11 +355,6 @@ def traces():
         ya = u1_y(gnd_pads[i])
         yb = u1_y(gnd_pads[i + 1])
         segs.append(s(U1_LEFT_X, ya, U1_LEFT_X, yb, 1, "B.Cu", W_PWR))
-    # Right-side GND pad (pin23) ↔ left-side GND via horizontal
-    r_gnd = [n for n in range(13, 25) if U1_RIGHT_NETS[n] == 1]
-    for rn in r_gnd:
-        ry = u1_y(rn - 12)
-        segs.append(s(U1_RIGHT_X, ry, U1_LEFT_X, ry, 1, "B.Cu", W_PWR))
 
     return "".join(segs)
 
