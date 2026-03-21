@@ -77,8 +77,8 @@ U1_LEFT_NETS = {
 # Net assignments for U1 right pins (13-24)
 U1_RIGHT_NETS = {
     13: 0,          # NFC1/P0.09 (unused)
-    14: 3,          # MOSI/P0.10
-    15: 4,          # MISO/P1.11
+    14: 4,          # MISO/P0.10 (swapped: nRF52840 SPI is software-configurable)
+    15: 3,          # MOSI/P1.11 (swapped: avoids F.Cu track crossing)
     16: 5,          # SCK/P1.13
     17: 0,          # P1.15     (unused)
     18: 0,          # AIN0/P0.02 (unused)
@@ -176,8 +176,8 @@ def fp_u1():
     lines = []
     lines.append(f'(footprint "SuperMini_nRF52840_Socket" (layer "F.Cu") '
                  f'(at {ORIGIN_X:.4f} {ORIGIN_Y:.4f}) (uuid "{uid()}")\n')
-    lines.append(fp_text("reference", "U1", W/2 - 4, U1_Y_TOP - 2.5))
-    lines.append(fp_text("value", "SuperMini_nRF52840", W/2 + 4, U1_Y_TOP - 2.5))
+    lines.append(fp_text("reference", "U1", W/2, U1_Y_TOP + 1.0))
+    lines.append(fp_text("value", "SuperMini_nRF52840", W/2, u1_y(12) - 1.0))
 
     # Left row pads (pins 1-12)
     for n in range(1, 13):
@@ -190,31 +190,21 @@ def fp_u1():
         y = u1_y(row_n)
         lines.append(thru_pad(str(n), U1_RIGHT_X, y, U1_RIGHT_NETS[n]))
 
-    # Silkscreen outline around socket area
+    # Silkscreen outline around socket area (clamped inside board edges)
     margin = 1.5
-    x1 = U1_LEFT_X - margin
-    x2 = U1_RIGHT_X + margin
-    y1 = U1_Y_TOP - margin
-    y2 = u1_y(12) + margin
+    x1 = max(0.3, U1_LEFT_X - margin)
+    x2 = min(W - 0.3, U1_RIGHT_X + margin)
+    y1 = max(0.3, U1_Y_TOP - margin)
+    y2 = min(H - 0.3, u1_y(12) + margin)
     for (ax, ay, bx, by) in [
         (x1, y1, x2, y1), (x2, y1, x2, y2),
         (x2, y2, x1, y2), (x1, y2, x1, y1)
     ]:
         lines.append(fp_line(ax, ay, bx, by))
 
-    # F.CrtYd (courtyard) — KiCad 9 required
-    cyd_m = 0.25   # courtyard margin from silkscreen
-    cx1, cx2 = x1 - cyd_m, x2 + cyd_m
-    cy1, cy2 = y1 - cyd_m, y2 + cyd_m
-    for (ax, ay, bx, by) in [
-        (cx1, cy1, cx2, cy1), (cx2, cy1, cx2, cy2),
-        (cx2, cy2, cx1, cy2), (cx1, cy2, cx1, cy1)
-    ]:
-        lines.append(fp_line(ax, ay, bx, by, layer="F.CrtYd", w=0.05))
-
     # Pin 1 marker
-    lines.append(fp_text("user", "1", U1_LEFT_X - 1.0, U1_Y_TOP, size=0.6))
-    lines.append(fp_text("user", "13", U1_RIGHT_X + 1.0, U1_Y_TOP, size=0.6))
+    lines.append(fp_text("user", "1", U1_LEFT_X + 1.8, U1_Y_TOP, size=0.8))
+    lines.append(fp_text("user", "13", U1_RIGHT_X - 1.8, U1_Y_TOP, size=0.8))
 
     lines.append(")\n")
     return "".join(lines)
@@ -226,16 +216,16 @@ def fp_j1():
     lines.append(f'(footprint "Connector_JST_PH_1x08" (layer "F.Cu") '
                  f'(at {ORIGIN_X:.4f} {ORIGIN_Y:.4f}) (uuid "{uid()}")\n')
     cx = (j1_x(1) + j1_x(8)) / 2
-    lines.append(fp_text("reference", "J1", cx, J1_Y - 1.5))
-    lines.append(fp_text("value", "PMW3360_Connector", cx, J1_Y + 1.5))
+    lines.append(fp_text("reference", "J1", cx, 0.5))
+    lines.append(fp_text("value", "PMW3360_Connector", cx, 2.6))
 
     for n in range(1, 9):
         # JST-PH: drill=0.75mm, pad=1.4mm → fits within 18mm board
         lines.append(thru_pad(str(n), j1_x(n), J1_Y, J1_NETS[n], drill=0.75, pad_d=1.4))
 
     # Silkscreen box
-    x1, x2 = j1_x(1) - 1.3, j1_x(8) + 1.3
-    y1, y2 = J1_Y - 1.3, J1_Y + 1.3
+    x1, x2 = j1_x(1) - 1.0, j1_x(8) + 1.0
+    y1, y2 = max(0.3, J1_Y - 1.0), J1_Y + 1.0
     for (ax, ay, bx, by) in [
         (x1, y1, x2, y1), (x2, y1, x2, y2),
         (x2, y2, x1, y2), (x1, y2, x1, y1)
@@ -250,10 +240,6 @@ def fp_j1():
         (x1-cyd_m, y2+cyd_m, x1-cyd_m, y1-cyd_m),
     ]:
         lines.append(fp_line(ax, ay, bx, by, layer="F.CrtYd", w=0.05))
-    # Pin 1 marker
-    lines.append(fp_text("user", "GND", j1_x(1), J1_Y + 2.0, size=0.5))
-    lines.append(fp_text("user", "CS",  j1_x(8), J1_Y + 2.0, size=0.5))
-
     lines.append(")\n")
     return "".join(lines)
 
@@ -287,8 +273,8 @@ def fp_j2():
         (x2, y2, x1, y2), (x1, y2, x1, y1)
     ]:
         lines.append(fp_line(ax, ay, bx, by))
-    lines.append(fp_text("user", "B+", j2_x(1), J2_Y - 2.0, size=0.6))
-    lines.append(fp_text("user", "B-", j2_x(2), J2_Y - 2.0, size=0.6))
+    lines.append(fp_text("user", "B+", j2_x(1), J2_Y - 2.0, size=0.8))
+    lines.append(fp_text("user", "B-", j2_x(2), J2_Y - 2.0, size=0.8))
 
     lines.append(")\n")
     return "".join(lines)
@@ -320,15 +306,15 @@ def traces():
     def s(x1, y1, x2, y2, net, layer="F.Cu", w=W_SIG):
         return segment(ox+x1, oy+y1, ox+x2, oy+y2, net, layer, w)
 
-    # ── MOSI: J1[6]=(12.81,1.27) → U1R14=(16.73,6.35) ─────────────────────
+    # ── MOSI: J1[6]=(12.0,1.27) → U1R15=(16.73,8.89) ──────────────────────
     mx1, my1 = j1_x(6), J1_Y
-    mx2, my2 = U1_RIGHT_X, u1_y(2)     # row index 2 = global pin14
+    mx2, my2 = U1_RIGHT_X, u1_y(3)     # row index 3 = global pin15
     segs.append(s(mx1, my1, mx1, my2, 3))   # vertical
     segs.append(s(mx1, my2, mx2, my2, 3))   # horizontal
 
-    # ── MISO: J1[7]=(15.35,1.27) → U1R15=(16.73,8.89) ─────────────────────
+    # ── MISO: J1[7]=(14.0,1.27) → U1R14=(16.73,6.35) ──────────────────────
     ix1, iy1 = j1_x(7), J1_Y
-    ix2, iy2 = U1_RIGHT_X, u1_y(3)     # row index 3 = global pin15
+    ix2, iy2 = U1_RIGHT_X, u1_y(2)     # row index 2 = global pin14
     segs.append(s(ix1, iy1, ix1, iy2, 4))
     segs.append(s(ix1, iy2, ix2, iy2, 4))
 
@@ -352,15 +338,15 @@ def traces():
     segs.append(s(bx1, by2, bx2, by2, 8, "B.Cu"))   # horizontal right
 
     # ── NCS: J1[8]=(16.0,1.27) → U1L12=(1.27,31.75)  [B.Cu] ──────────────
-    # Route around right edge and bottom to avoid crossing MOSI/MISO/SCK
-    ncs_edge_x = 17.5       # right-edge routing x (0.5mm from board edge)
-    ncs_bot_y  = 32.5       # bottom routing y (0.5mm from board edge, clear of BATIN)
-    nx1, ny1 = j1_x(8), J1_Y           # J1 pin8 (CS)
-    nx2, ny2 = U1_LEFT_X, u1_y(12)     # U1L pin12 (NCS)
-    segs.append(s(nx1, ny1, ncs_edge_x, ny1, 6, "B.Cu"))   # to edge
-    segs.append(s(ncs_edge_x, ny1, ncs_edge_x, ncs_bot_y, 6, "B.Cu"))  # down
-    segs.append(s(ncs_edge_x, ncs_bot_y, nx2, ncs_bot_y, 6, "B.Cu"))   # left
-    segs.append(s(nx2, ncs_bot_y, nx2, ny2, 6, "B.Cu"))    # up to pin12
+    # Route: left from J1[8], down between rows, left below MOTION, down to pin12
+    nx1, ny1 = j1_x(8), J1_Y           # J1 pin8 (CS) = (16.0, 1.27)
+    nx2, ny2 = U1_LEFT_X, u1_y(12)     # U1L pin12 = (1.27, 31.75)
+    segs.append(s(nx1, ny1, 15.1, ny1, 6, "B.Cu"))         # left to x=15.1
+    segs.append(s(15.1, ny1, 15.1, 12.7, 6, "B.Cu"))       # down to y=12.7
+    segs.append(s(15.1, 12.7, 9.0, 12.7, 6, "B.Cu"))       # left to x=9.0
+    segs.append(s(9.0, 12.7, 9.0, 30.5, 6, "B.Cu"))        # down to y=30.5
+    segs.append(s(9.0, 30.5, nx2, 30.5, 6, "B.Cu"))         # left to x=1.27
+    segs.append(s(nx2, 30.5, nx2, ny2, 6, "B.Cu"))          # down to pin12
 
     # ── MOTION: J1[4]=(7.73,1.27) → U1L11=(1.27,29.21)  [B.Cu] ────────────
     mot_x = j1_x(4)                     # x = 7.73
@@ -393,10 +379,7 @@ def silkscreen():
     ox, oy = ORIGIN_X, ORIGIN_Y
     parts = []
     # Board title
-    parts.append(gr_text("nRF52840+PMW3360", ox + W/2, oy + H - 1.0, size=0.7))
-    # Pin labels on J1
-    for n, name in [(1,"GND"),(2,"VCC"),(4,"MOT"),(5,"SCK"),(6,"MOSI"),(7,"MISO"),(8,"NCS")]:
-        parts.append(gr_text(name, ox + j1_x(n), oy + J1_Y - 2.3, size=0.5, rot=90))
+    parts.append(gr_text("nRF52840+PMW3360", ox + W/2, oy + H - 1.5, size=0.8))
     return "".join(parts)
 
 
@@ -438,6 +421,7 @@ def generate():
 
     # ── Setup (KiCad 9 minimal) ──────────────────────────────────────────────
     parts.append("""  (setup
+    (copper_edge_clearance 0.25)
     (pad_to_mask_clearance 0)
     (allow_soldermask_bridges_in_footprints no)
     (pcbplotparams
@@ -485,16 +469,6 @@ def generate():
     ox, oy = ORIGIN_X, ORIGIN_Y
     parts.append(f'  (gr_rect (start {ox:.4f} {oy:.4f}) (end {ox+W:.4f} {oy+H:.4f}) '
                  f'(stroke (width 0.05) (type default)) (layer "Edge.Cuts") (uuid "{uid()}"))\n\n')
-
-    # ── Corner markers on silkscreen ─────────────────────────────────────────
-    mark = 1.0
-    for (cx, cy) in [(ox, oy), (ox+W, oy), (ox+W, oy+H), (ox, oy+H)]:
-        dx = mark if cx == ox else -mark
-        dy = mark if cy == oy else -mark
-        parts.append(f'  (gr_line (start {cx:.2f} {cy:.2f}) (end {cx+dx:.2f} {cy:.2f}) '
-                     f'(stroke (width 0.12) (type default)) (layer "F.SilkS") (uuid "{uid()}"))\n')
-        parts.append(f'  (gr_line (start {cx:.2f} {cy:.2f}) (end {cx:.2f} {cy+dy:.2f}) '
-                     f'(stroke (width 0.12) (type default)) (layer "F.SilkS") (uuid "{uid()}"))\n')
 
     # ── Footprints ───────────────────────────────────────────────────────────
     parts.append(fp_u1())
