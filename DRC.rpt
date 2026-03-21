@@ -1,60 +1,8 @@
 ** Drc report for nrf52840_pmw3360.kicad_pcb **
-** Created on 2026-03-21T16:22:48 **
+** Created on 2026-03-21T16:28:19 **
 ** Report includes: Errors, Warnings **
 
-** Found 13 DRC violations **
-[silk_edge_clearance]: Silkscreen clipped by board edge
-    Rule: 基板の設定のシルクスクリーンの制約; warning
-    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
-    @(144.0000 mm, 85.5000 mm): Reference field of J1
-[silk_overlap]: Silkscreen clearance
-    Rule: 基板の設定のシルクスクリーンの制約; warning
-    @(144.0000 mm, 116.5000 mm): PCB text 'nRF52840+PMW3360' on F.Silkscreen
-    @(144.0000 mm, 115.7500 mm): Value field of U1 (SuperMini_nRF52840)
-[silk_overlap]: Silkscreen clearance
-    Rule: 基板の設定のシルクスクリーンの制約; warning
-    @(145.5000 mm, 97.0000 mm): Footprint text of J2 (B+)
-    @(146.5000 mm, 97.0000 mm): Reference field of J2
-[silk_overlap]: Silkscreen clearance
-    Rule: 基板の設定のシルクスクリーンの制約; warning
-    @(147.5000 mm, 97.0000 mm): Footprint text of J2 (B-)
-    @(146.5000 mm, 97.0000 mm): Reference field of J2
-[silk_overlap]: Silkscreen clearance
-    Rule: 基板の設定のシルクスクリーンの制約; warning
-    @(144.0000 mm, 87.6000 mm): Value field of J1 (PMW3360_Connector)
-    @(135.3000 mm, 87.3100 mm): Segment of U1 on F.Silkscreen
-[silk_overlap]: Silkscreen clearance
-    Rule: 基板の設定のシルクスクリーンの制約; warning
-    @(152.0000 mm, 87.2700 mm): Segment of J1 on F.Silkscreen
-    @(144.0000 mm, 87.6000 mm): Value field of J1 (PMW3360_Connector)
-[silk_overlap]: Silkscreen clearance
-    Rule: 基板の設定のシルクスクリーンの制約; warning
-    @(144.0000 mm, 85.5000 mm): Reference field of J1
-    @(136.0000 mm, 85.3000 mm): Segment of J1 on F.Silkscreen
-[silk_overlap]: Silkscreen clearance
-    Rule: 基板の設定のシルクスクリーンの制約; warning
-    @(152.0000 mm, 85.3000 mm): Segment of J1 on F.Silkscreen
-    @(135.3000 mm, 87.3100 mm): Segment of U1 on F.Silkscreen
-[silk_overlap]: Silkscreen clearance
-    Rule: 基板の設定のシルクスクリーンの制約; warning
-    @(152.0000 mm, 87.2700 mm): Segment of J1 on F.Silkscreen
-    @(135.3000 mm, 87.3100 mm): Segment of U1 on F.Silkscreen
-[silk_overlap]: Silkscreen clearance
-    Rule: 基板の設定のシルクスクリーンの制約; warning
-    @(136.0000 mm, 87.2700 mm): Segment of J1 on F.Silkscreen
-    @(135.3000 mm, 87.3100 mm): Segment of U1 on F.Silkscreen
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(144.0000 mm, 85.5000 mm): Reference field of J1
-    @(143.0000 mm, 86.2700 mm): PTH pad 4 [MOTION] of J1
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(144.0000 mm, 85.5000 mm): Reference field of J1
-    @(145.0000 mm, 86.2700 mm): PTH pad 5 [SCK] of J1
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(146.5000 mm, 101.0000 mm): Value field of J2 (Battery_JST-PH)
-    @(151.7300 mm, 101.5100 mm): PTH pad 18 [<no net>] of U1
+** Found 0 DRC violations **
 
 ** Found 1 unconnected pads **
 [unconnected_items]: Missing connection between items
