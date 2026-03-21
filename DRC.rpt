@@ -1,13 +1,33 @@
 ** Drc report for nrf52840_pmw3360.kicad_pcb **
-** Created on 2026-03-21T16:28:19 **
+** Created on 2026-03-21T16:59:27 **
 ** Report includes: Errors, Warnings **
 
-** Found 0 DRC violations **
+** Found 5 DRC violations **
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(151.7300 mm, 114.2100 mm): Track [GND] on B.Cu, length 15.4600 mm
+    @(143.0000 mm, 86.2700 mm): Track [MOTION] on B.Cu, length 27.9400 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(145.5000 mm, 99.0000 mm): Track [BATIN] on B.Cu, length 17.7500 mm
+    @(151.7300 mm, 114.2100 mm): Track [GND] on B.Cu, length 15.4600 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(151.7300 mm, 114.2100 mm): Track [GND] on B.Cu, length 15.4600 mm
+    @(144.0000 mm, 97.7000 mm): Track [NCS] on B.Cu, length 17.8000 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(151.7300 mm, 114.2100 mm): Track [GND] on B.Cu, length 15.4600 mm
+    @(143.0000 mm, 114.2100 mm): Track [MOTION] on B.Cu, length 6.7300 mm
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(151.7300 mm, 114.2100 mm): Track [GND] on B.Cu, length 15.4600 mm
+    @(136.2700 mm, 114.2100 mm): PTH pad 11 [MOTION] of U1
 
 ** Found 1 unconnected pads **
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(136.2700 mm, 96.4300 mm): PTH pad 4 [GND] of U1
+    @(135.0000 mm, 85.0000 mm): Zone [GND] on B.Cu, priority 0
     @(135.0000 mm, 85.0000 mm): Zone [GND] on B.Cu, priority 0
 
 ** Found 0 Footprint errors **
