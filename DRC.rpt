@@ -1,0 +1,416 @@
+** Drc report for nrf52840_pmw3360.kicad_pcb **
+** Created on 2026-03-21T11:38:08 **
+** Report includes: Errors, Warnings **
+
+** Found 102 DRC violations **
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(147.0000 mm, 91.3500 mm): Track [MOSI] on F.Cu, length 4.7300 mm
+    @(149.0000 mm, 86.2700 mm): Track [MISO] on F.Cu, length 7.6200 mm
+[shorting_items]: ２つのネットを短絡するアイテム (ネット BATIN と NCS)
+    Local override; error
+    @(151.7300 mm, 116.7500 mm): PTH pad 24 [BATIN] of U1
+    @(152.5000 mm, 117.5000 mm): Track [NCS] on B.Cu, length 16.2300 mm
+[shorting_items]: ２つのネットを短絡するアイテム (ネット  と NCS)
+    Local override; error
+    @(151.7300 mm, 101.5100 mm): PTH pad 18 [<no net>] of U1
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+[courtyards_overlap]: Courtyards overlap
+    Rule: 基板の設定のコートヤードの制約; error
+    @(135.0000 mm, 85.0000 mm): Footprint J1
+    @(135.0000 mm, 85.0000 mm): Footprint U1
+[courtyards_overlap]: Courtyards overlap
+    Rule: 基板の設定のコートヤードの制約; error
+    @(135.0000 mm, 85.0000 mm): Footprint J2
+    @(135.0000 mm, 85.0000 mm): Footprint U1
+[pth_inside_courtyard]: PTH inside courtyard
+    Local override; error
+    @(145.5000 mm, 99.0000 mm): PTH pad 1 [BATIN] of J2
+    @(135.0000 mm, 85.0000 mm): Footprint U1
+[pth_inside_courtyard]: PTH inside courtyard
+    Local override; error
+    @(147.5000 mm, 99.0000 mm): PTH pad 2 [GND] of J2
+    @(135.0000 mm, 85.0000 mm): Footprint U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3750 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.0000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 1.5000 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3750 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3750 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(152.5000 mm, 117.5000 mm): Track [NCS] on B.Cu, length 16.2300 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.3750 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 117.5000 mm): Track [NCS] on B.Cu, length 0.7500 mm
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 88.8100 mm): PTH pad 1 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 91.3500 mm): PTH pad 2 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 93.8900 mm): PTH pad 3 [GND] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 96.4300 mm): PTH pad 4 [GND] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 98.9700 mm): PTH pad 5 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 101.5100 mm): PTH pad 6 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 104.0500 mm): PTH pad 7 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 106.5900 mm): PTH pad 8 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 109.1300 mm): PTH pad 9 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 111.6700 mm): PTH pad 10 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 114.2100 mm): PTH pad 11 [MOTION] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(136.2700 mm, 116.7500 mm): PTH pad 12 [NCS] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.7300 mm, 88.8100 mm): PTH pad 13 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.7300 mm, 91.3500 mm): PTH pad 14 [MOSI] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.7300 mm, 93.8900 mm): PTH pad 15 [MISO] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.7300 mm, 96.4300 mm): PTH pad 16 [SCK] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.7300 mm, 98.9700 mm): PTH pad 17 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.7300 mm, 101.5100 mm): PTH pad 18 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.7300 mm, 104.0500 mm): PTH pad 19 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.7300 mm, 106.5900 mm): PTH pad 20 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.7300 mm, 109.1300 mm): PTH pad 21 [VCC] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.7300 mm, 111.6700 mm): PTH pad 22 [<no net>] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.7300 mm, 114.2100 mm): PTH pad 23 [GND] of U1
+[copper_edge_clearance]: 基板端クリアランス違反 (基板の設定の基板端の制約 クリアランス 0.5000 mm; 現状 0.4700 mm)
+    Rule: 基板の設定の基板端の制約; error
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(151.7300 mm, 116.7500 mm): PTH pad 24 [BATIN] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+    @(151.7300 mm, 109.1300 mm): PTH pad 21 [VCC] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+    @(151.7300 mm, 111.6700 mm): PTH pad 22 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+    @(151.7300 mm, 114.2100 mm): PTH pad 23 [GND] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+    @(151.7300 mm, 116.7500 mm): PTH pad 24 [BATIN] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+    @(151.7300 mm, 88.8100 mm): PTH pad 13 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+    @(151.7300 mm, 91.3500 mm): PTH pad 14 [MOSI] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+    @(151.7300 mm, 93.8900 mm): PTH pad 15 [MISO] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+    @(151.7300 mm, 96.4300 mm): PTH pad 16 [SCK] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+    @(151.7300 mm, 98.9700 mm): PTH pad 17 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+    @(151.7300 mm, 101.5100 mm): PTH pad 18 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+    @(151.7300 mm, 104.0500 mm): PTH pad 19 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 86.2700 mm): Track [NCS] on B.Cu, length 31.2300 mm
+    @(151.7300 mm, 106.5900 mm): PTH pad 20 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(152.5000 mm, 117.5000 mm): Track [NCS] on B.Cu, length 16.2300 mm
+    @(151.7300 mm, 116.7500 mm): PTH pad 24 [BATIN] of U1
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(135.0000 mm, 85.0000 mm): Segment on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(135.0000 mm, 85.0000 mm): Segment on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(153.0000 mm, 85.0000 mm): Segment on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(153.0000 mm, 85.0000 mm): Segment on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(153.0000 mm, 118.0000 mm): Segment on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(153.0000 mm, 118.0000 mm): Segment on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(135.0000 mm, 118.0000 mm): Segment on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(135.0000 mm, 118.0000 mm): Segment on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(148.0000 mm, 86.3100 mm): Value field of U1 (SuperMini_nRF52840)
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(134.7700 mm, 87.3100 mm): Segment of U1 on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(152.7300 mm, 88.8100 mm): Footprint text of U1 (13)
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(144.0000 mm, 84.7700 mm): Reference field of J1
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(135.7000 mm, 84.9700 mm): Segment of J1 on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(152.3000 mm, 84.9700 mm): Segment of J1 on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Rectangle on Edge.Cuts
+    @(135.7000 mm, 87.5700 mm): Segment of J1 on F.Silkscreen
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.7000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(144.0000 mm, 117.0000 mm): PCB text 'nRF52840+PMW3360' on F.Silkscreen
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(137.0000 mm, 83.9700 mm): PCB text 'GND' on F.Silkscreen
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(139.0000 mm, 83.9700 mm): PCB text 'VCC' on F.Silkscreen
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(143.0000 mm, 83.9700 mm): PCB text 'MOT' on F.Silkscreen
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(145.0000 mm, 83.9700 mm): PCB text 'SCK' on F.Silkscreen
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(147.0000 mm, 83.9700 mm): PCB text 'MOSI' on F.Silkscreen
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(149.0000 mm, 83.9700 mm): PCB text 'MISO' on F.Silkscreen
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(151.0000 mm, 83.9700 mm): PCB text 'NCS' on F.Silkscreen
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.6000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(135.2700 mm, 88.8100 mm): Footprint text of U1 (1)
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.6000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(152.7300 mm, 88.8100 mm): Footprint text of U1 (13)
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(137.0000 mm, 88.2700 mm): Footprint text of J1 (GND)
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.5000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(151.0000 mm, 88.2700 mm): Footprint text of J1 (CS)
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.6000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(145.5000 mm, 97.0000 mm): Footprint text of J2 (B+)
+[text_height]: 文字の高さが許容範囲外 (基板の設定のシルク印刷のテキスト高の制約 最小高さ 0.8000 mm; 現状 0.6000 mm)
+    Rule: 基板の設定のシルク印刷のテキスト高の制約; warning
+    @(147.5000 mm, 97.0000 mm): Footprint text of J2 (B-)
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(153.2300 mm, 87.3100 mm): Segment of U1 on F.Silkscreen
+    @(152.7300 mm, 88.8100 mm): Footprint text of U1 (13)
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(134.7700 mm, 87.3100 mm): Segment of U1 on F.Silkscreen
+    @(152.3000 mm, 84.9700 mm): Segment of J1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(134.7700 mm, 87.3100 mm): Segment of U1 on F.Silkscreen
+    @(135.7000 mm, 87.5700 mm): Segment of J1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(134.7700 mm, 87.3100 mm): Segment of U1 on F.Silkscreen
+    @(144.0000 mm, 87.7700 mm): Value field of J1 (PMW3360_Connector)
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(144.0000 mm, 84.7700 mm): Reference field of J1
+    @(135.7000 mm, 84.9700 mm): Segment of J1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.7000 mm, 84.9700 mm): Segment of J1 on F.Silkscreen
+    @(153.0000 mm, 85.0000 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Segment on F.Silkscreen
+    @(135.7000 mm, 84.9700 mm): Segment of J1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(148.0000 mm, 86.3100 mm): Value field of U1 (SuperMini_nRF52840)
+    @(152.3000 mm, 84.9700 mm): Segment of J1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(152.3000 mm, 84.9700 mm): Segment of J1 on F.Silkscreen
+    @(153.0000 mm, 85.0000 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(144.0000 mm, 87.7700 mm): Value field of J1 (PMW3360_Connector)
+    @(152.3000 mm, 87.5700 mm): Segment of J1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(148.0000 mm, 86.3100 mm): Value field of U1 (SuperMini_nRF52840)
+    @(153.0000 mm, 85.0000 mm): Segment on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(135.0000 mm, 85.0000 mm): Segment on F.Silkscreen
+    @(135.7000 mm, 87.5700 mm): Segment of J1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: 基板の設定のシルクスクリーンの制約; warning
+    @(146.5000 mm, 97.0000 mm): Reference field of J2
+    @(147.5000 mm, 97.0000 mm): Footprint text of J2 (B-)
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(140.0000 mm, 86.3100 mm): Reference field of U1
+    @(139.0000 mm, 86.2700 mm): PTH pad 2 [VCC] of J1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(140.0000 mm, 86.3100 mm): Reference field of U1
+    @(141.0000 mm, 86.2700 mm): PTH pad 3 [<no net>] of J1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(148.0000 mm, 86.3100 mm): Value field of U1 (SuperMini_nRF52840)
+    @(145.0000 mm, 86.2700 mm): PTH pad 5 [SCK] of J1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(148.0000 mm, 86.3100 mm): Value field of U1 (SuperMini_nRF52840)
+    @(147.0000 mm, 86.2700 mm): PTH pad 6 [MOSI] of J1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(148.0000 mm, 86.3100 mm): Value field of U1 (SuperMini_nRF52840)
+    @(143.0000 mm, 86.2700 mm): PTH pad 4 [MOTION] of J1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(148.0000 mm, 86.3100 mm): Value field of U1 (SuperMini_nRF52840)
+    @(149.0000 mm, 86.2700 mm): PTH pad 7 [MISO] of J1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(148.0000 mm, 86.3100 mm): Value field of U1 (SuperMini_nRF52840)
+    @(151.0000 mm, 86.2700 mm): PTH pad 8 [NCS] of J1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(137.0000 mm, 88.2700 mm): Footprint text of J1 (GND)
+    @(136.2700 mm, 88.8100 mm): PTH pad 1 [<no net>] of U1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(152.7300 mm, 88.8100 mm): Footprint text of U1 (13)
+    @(151.7300 mm, 88.8100 mm): PTH pad 13 [<no net>] of U1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(151.0000 mm, 88.2700 mm): Footprint text of J1 (CS)
+    @(151.7300 mm, 88.8100 mm): PTH pad 13 [<no net>] of U1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(135.2700 mm, 88.8100 mm): Footprint text of U1 (1)
+    @(136.2700 mm, 88.8100 mm): PTH pad 1 [<no net>] of U1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(146.5000 mm, 101.0000 mm): Value field of J2 (Battery_JST-PH)
+    @(151.7300 mm, 101.5100 mm): PTH pad 18 [<no net>] of U1
+
+** Found 1 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(136.2700 mm, 96.4300 mm): PTH pad 4 [GND] of U1
+    @(135.0000 mm, 85.0000 mm): Zone [GND] on B.Cu, priority 0
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **
