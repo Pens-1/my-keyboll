@@ -421,7 +421,7 @@ def generate():
 
     # ── Setup (KiCad 9 minimal) ──────────────────────────────────────────────
     parts.append("""  (setup
-    (copper_edge_clearance 0.25)
+    (edge_clearance 0.25)
     (pad_to_mask_clearance 0)
     (allow_soldermask_bridges_in_footprints no)
     (pcbplotparams
