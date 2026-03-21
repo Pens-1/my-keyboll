@@ -357,10 +357,10 @@ def gnd_zone():
     ox, oy = ORIGIN_X, ORIGIN_Y
     return f"""(zone (net 1) (net_name "GND") (layer "B.Cu") (uuid "{uid()}")
   (hatch edge 0.508)
-  (connect_pads (clearance 0.2))
+  (connect_pads yes (clearance 0.2))
   (min_thickness 0.25)
   (filled_areas_thickness no)
-  (fill yes (thermal_gap 0.5) (thermal_bridge_width 0.5))
+  (fill (thermal_gap 0.3) (thermal_bridge_width 0.3))
   (polygon (pts
     (xy {ox:.4f} {oy:.4f}) (xy {ox+W:.4f} {oy:.4f})
     (xy {ox+W:.4f} {oy+H:.4f}) (xy {ox:.4f} {oy+H:.4f})))
