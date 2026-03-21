@@ -135,7 +135,7 @@ def thru_pad(number, x, y, net_id,
     return (
         f'    (pad "{number}" thru_hole {shape} (at {x:.4f} {y:.4f}) '
         f'(size {pad_d:.4f} {pad_d:.4f}) (drill {drill:.4f}) '
-        f'(layers "*.Cu" "*.Mask") {nr})\n'
+        f'(layers "*.Cu" "*.Mask") {nr} (uuid "{uid()}"))\n'
     )
 
 def smd_pad(number, x, y, net_id, w=1.6, h=1.6):
@@ -143,7 +143,7 @@ def smd_pad(number, x, y, net_id, w=1.6, h=1.6):
     nr = net_ref(net_id)
     return (
         f'    (pad "{number}" smd rect (at {x:.4f} {y:.4f}) '
-        f'(size {w:.4f} {h:.4f}) (layers "F.Cu" "F.Paste" "F.Mask") {nr})\n'
+        f'(size {w:.4f} {h:.4f}) (layers "F.Cu" "F.Paste" "F.Mask") {nr} (uuid "{uid()}"))\n'
     )
 
 def fp_text(kind, text, x, y, layer="F.SilkS", size=0.8):
@@ -155,7 +155,7 @@ def fp_text(kind, text, x, y, layer="F.SilkS", size=0.8):
 def fp_line(x1, y1, x2, y2, layer="F.SilkS", w=0.12):
     return (
         f'  (fp_line (start {x1:.4f} {y1:.4f}) (end {x2:.4f} {y2:.4f}) '
-        f'(stroke (width {w:.4f}) (type default)) (layer "{layer}"))\n'
+        f'(stroke (width {w:.4f}) (type default)) (layer "{layer}") (uuid "{uid()}"))\n'
     )
 
 def segment(x1, y1, x2, y2, net_id, layer="F.Cu", width=0.25):
@@ -419,9 +419,8 @@ def generate():
   )
 """)
 
-    # ── Setup (KiCad 9 minimal) ──────────────────────────────────────────────
+    # ── Setup (KiCad 9.0 format) ──────────────────────────────────────────────
     parts.append("""  (setup
-    (edge_clearance 0.25)
     (pad_to_mask_clearance 0)
     (allow_soldermask_bridges_in_footprints no)
     (pcbplotparams
@@ -457,6 +456,20 @@ def generate():
       (drillshape 1)
       (scaleselection 1)
       (outputdirectory "gerber/"))
+    (defaults
+      (edge_clearance 0.25)
+      (copper_line_width 0.2)
+      (copper_text_dims (size 1.5 1.5) (thickness 0.3))
+      (silk_line_width 0.12)
+      (silk_text_dims (size 1.0 1.0) (thickness 0.15))
+      (courtyard_line_width 0.05)
+      (fab_layers_line_width 0.1)
+      (fab_layers_text_dims (size 1.0 1.0) (thickness 0.15))
+      (edge_cuts_line_width 0.05)
+      (other_layers_line_width 0.1)
+      (other_layers_text_dims (size 1.0 1.0) (thickness 0.15))
+      (dimension_units 3)
+      (dimension_precision 4))
   )
 """)
 
