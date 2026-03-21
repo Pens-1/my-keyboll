@@ -176,8 +176,8 @@ def fp_u1():
     lines = []
     lines.append(f'(footprint "SuperMini_nRF52840_Socket" (layer "F.Cu") '
                  f'(at {ORIGIN_X:.4f} {ORIGIN_Y:.4f}) (uuid "{uid()}")\n')
-    lines.append(fp_text("reference", "U1", W/2, U1_Y_TOP + 1.0))
-    lines.append(fp_text("value", "SuperMini_nRF52840", W/2, u1_y(12) - 1.0))
+    lines.append(fp_text("reference", "U1", W/2, U1_Y_TOP + 1.0, layer="F.Fab"))
+    lines.append(fp_text("value", "SuperMini_nRF52840", W/2, u1_y(12) - 1.0, layer="F.Fab"))
 
     # Left row pads (pins 1-12)
     for n in range(1, 13):
@@ -216,22 +216,16 @@ def fp_j1():
     lines.append(f'(footprint "Connector_JST_PH_1x08" (layer "F.Cu") '
                  f'(at {ORIGIN_X:.4f} {ORIGIN_Y:.4f}) (uuid "{uid()}")\n')
     cx = (j1_x(1) + j1_x(8)) / 2
-    lines.append(fp_text("reference", "J1", cx, 0.5))
-    lines.append(fp_text("value", "PMW3360_Connector", cx, 2.6))
+    lines.append(fp_text("reference", "J1", cx, 0.5, layer="F.Fab"))
+    lines.append(fp_text("value", "PMW3360_Connector", cx, 2.6, layer="F.Fab"))
 
     for n in range(1, 9):
         # JST-PH: drill=0.75mm, pad=1.4mm → fits within 18mm board
         lines.append(thru_pad(str(n), j1_x(n), J1_Y, J1_NETS[n], drill=0.75, pad_d=1.4))
 
-    # Silkscreen box
+    # F.CrtYd only (silkscreen box removed to avoid overlap with U1 outline)
     x1, x2 = j1_x(1) - 1.0, j1_x(8) + 1.0
     y1, y2 = max(0.3, J1_Y - 1.0), J1_Y + 1.0
-    for (ax, ay, bx, by) in [
-        (x1, y1, x2, y1), (x2, y1, x2, y2),
-        (x2, y2, x1, y2), (x1, y2, x1, y1)
-    ]:
-        lines.append(fp_line(ax, ay, bx, by))
-    # F.CrtYd
     cyd_m = 0.25
     for (ax, ay, bx, by) in [
         (x1-cyd_m, y1-cyd_m, x2+cyd_m, y1-cyd_m),
@@ -250,8 +244,8 @@ def fp_j2():
     cx = (j2_x(1) + j2_x(2)) / 2
     lines.append(f'(footprint "Connector_JST_PH_2pin" (layer "F.Cu") '
                  f'(at {ORIGIN_X:.4f} {ORIGIN_Y:.4f}) (uuid "{uid()}")\n')
-    lines.append(fp_text("reference", "J2", cx, J2_Y - 2.0))
-    lines.append(fp_text("value", "Battery_JST-PH", cx, J2_Y + 2.0))
+    lines.append(fp_text("reference", "J2", cx, J2_Y - 2.0, layer="F.Fab"))
+    lines.append(fp_text("value", "Battery_JST-PH", cx, J2_Y + 2.0, layer="F.Fab"))
 
     # JST-PH through-hole: 0.8mm drill, 1.6mm pad
     lines.append(thru_pad("1", j2_x(1), J2_Y, J2_NETS[1], drill=0.8, pad_d=1.6, shape="oval"))
@@ -273,8 +267,8 @@ def fp_j2():
         (x2, y2, x1, y2), (x1, y2, x1, y1)
     ]:
         lines.append(fp_line(ax, ay, bx, by))
-    lines.append(fp_text("user", "B+", j2_x(1), J2_Y - 2.0, size=0.8))
-    lines.append(fp_text("user", "B-", j2_x(2), J2_Y - 2.0, size=0.8))
+    lines.append(fp_text("user", "B+", j2_x(1), J2_Y - 2.0, layer="F.Fab", size=0.8))
+    lines.append(fp_text("user", "B-", j2_x(2), J2_Y - 2.0, layer="F.Fab", size=0.8))
 
     lines.append(")\n")
     return "".join(lines)
@@ -379,7 +373,7 @@ def silkscreen():
     ox, oy = ORIGIN_X, ORIGIN_Y
     parts = []
     # Board title
-    parts.append(gr_text("nRF52840+PMW3360", ox + W/2, oy + H - 1.5, size=0.8))
+    parts.append(gr_text("nRF52840+PMW3360", ox + W/2, oy + H - 1.5, layer="F.Fab", size=0.8))
     return "".join(parts)
 
 
