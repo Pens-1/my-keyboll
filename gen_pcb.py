@@ -91,8 +91,10 @@ U1_RIGHT_NETS = {
 }
 
 # ─── J1 (8-pin PMW3360 connector) ───────────────────────────────────────────
+# 2.0mm pitch (JST-PH): 2*0.7 + 7*2.0 = 15.4mm < 18mm → fits within board
+J1_PITCH  = 2.0
 J1_Y      = 1.27
-J1_X0     = (W - 7 * PITCH) / 2    # centre the 8 pins: = 0.11mm
+J1_X0     = (W - 7 * J1_PITCH) / 2    # = (18 - 14) / 2 = 2.0mm
 J1_NETS   = {
     1: 1,   # GND
     2: 2,   # VCC
@@ -105,14 +107,14 @@ J1_NETS   = {
 }
 
 def j1_x(n):
-    return J1_X0 + (n - 1) * PITCH
+    return J1_X0 + (n - 1) * J1_PITCH
 
 # ─── J2 (2-pin JST-PH battery) ──────────────────────────────────────────────
-# Placed left-center between the two U1 pin rows
-# pin1(B+) at x=3.5, pin2(B-) at x=5.5, y=H/2=16.5mm
+# Placed between SCK(x=10) and MOSI(x=12) traces, below their vertical sections
+# pin1(B+) at x=10.5, pin2(B-) at x=12.5, y=14.0mm
 J2_PITCH = 2.0          # JST-PH 2mm pitch
-J2_CX    = 4.5          # centre x: left-of-centre between rows
-J2_Y     = H / 2        # y: vertical centre of board = 16.5mm
+J2_CX    = 11.5         # centre x: between SCK(10.0) and MOSI(12.0) trace columns
+J2_Y     = 14.0         # y: below all vertical F.Cu trace ends (SCK ends at y=11.43)
 
 def j2_x(n):            # n=1 (B+), n=2 (B-)
     return J2_CX + (n - 1.5) * J2_PITCH   # pin1=3.5mm, pin2=5.5mm
@@ -219,16 +221,17 @@ def fp_u1():
 
 
 def fp_j1():
-    """PMW3360 8-pin connector (horizontal, top of board)."""
+    """PMW3360 8-pin connector (horizontal, top of board). 2.0mm pitch JST-PH."""
     lines = []
-    lines.append(f'(footprint "Connector_PinHeader_2.54mm_1x08" (layer "F.Cu") '
+    lines.append(f'(footprint "Connector_JST_PH_1x08" (layer "F.Cu") '
                  f'(at {ORIGIN_X:.4f} {ORIGIN_Y:.4f}) (uuid "{uid()}")\n')
     cx = (j1_x(1) + j1_x(8)) / 2
     lines.append(fp_text("reference", "J1", cx, J1_Y - 1.5))
-    lines.append(fp_text("value", "PMW3360_Breakout", cx, J1_Y + 1.5))
+    lines.append(fp_text("value", "PMW3360_Connector", cx, J1_Y + 1.5))
 
     for n in range(1, 9):
-        lines.append(thru_pad(str(n), j1_x(n), J1_Y, J1_NETS[n]))
+        # JST-PH: drill=0.75mm, pad=1.4mm → fits within 18mm board
+        lines.append(thru_pad(str(n), j1_x(n), J1_Y, J1_NETS[n], drill=0.75, pad_d=1.4))
 
     # Silkscreen box
     x1, x2 = j1_x(1) - 1.3, j1_x(8) + 1.3
@@ -341,16 +344,17 @@ def traces():
     segs.append(s(vx1, vy1, vx1, vy2, 2, w=W_PWR))
     segs.append(s(vx1, vy2, vx2, vy2, 2, w=W_PWR))
 
-    # ── BATIN: J2[1]=(3.5,16.5) → U1R24=(16.73,31.75)  [F.Cu] ─────────────
+    # ── BATIN: J2[1]=(10.5,14.0) → U1R24=(16.73,31.75)  [B.Cu] ────────────
+    # B.Cu avoids crossing VCC horizontal trace (F.Cu at y=24.13)
     bx1, by1 = j2_x(1), J2_Y           # J2 pin1 (B+)
     bx2, by2 = U1_RIGHT_X, u1_y(12)    # U1R pin24 = row index 12
-    segs.append(s(bx1, by1, bx1, by2, 8))   # vertical down
-    segs.append(s(bx1, by2, bx2, by2, 8))   # horizontal right
+    segs.append(s(bx1, by1, bx1, by2, 8, "B.Cu"))   # vertical down
+    segs.append(s(bx1, by2, bx2, by2, 8, "B.Cu"))   # horizontal right
 
-    # ── NCS: J1[8]=(17.89,1.27) → U1L12=(1.27,31.75)  [B.Cu] ──────────────
+    # ── NCS: J1[8]=(16.0,1.27) → U1L12=(1.27,31.75)  [B.Cu] ──────────────
     # Route around right edge and bottom to avoid crossing MOSI/MISO/SCK
-    ncs_edge_x = 17.0       # right-edge routing x (1mm from board edge)
-    ncs_bot_y  = 32.0       # bottom routing y (1mm from board edge)
+    ncs_edge_x = 17.5       # right-edge routing x (0.5mm from board edge)
+    ncs_bot_y  = 32.5       # bottom routing y (0.5mm from board edge, clear of BATIN)
     nx1, ny1 = j1_x(8), J1_Y           # J1 pin8 (CS)
     nx2, ny2 = U1_LEFT_X, u1_y(12)     # U1L pin12 (NCS)
     segs.append(s(nx1, ny1, ncs_edge_x, ny1, 6, "B.Cu"))   # to edge
@@ -527,6 +531,6 @@ if __name__ == "__main__":
     print(f"  J1 PMW3360  8-pin  : y={J1_Y:.2f}mm, x={j1_x(1):.2f}..{j1_x(8):.2f}mm (horizontal)")
     print(f"  J2 Battery  2-pin  : ({j2_x(1):.2f},{J2_Y:.2f}) & ({j2_x(2):.2f},{J2_Y:.2f})mm")
     print()
-    print("Routed traces (F.Cu): MOSI, MISO, SCK, VCC, BATIN")
-    print("Routed traces (B.Cu): NCS (right edge→bottom), MOTION (vertical→left)")
+    print("Routed traces (F.Cu): MOSI, MISO, SCK, VCC")
+    print("Routed traces (B.Cu): NCS (right edge→bottom), MOTION (vertical→left), BATIN")
     print("GND copper fill     : B.Cu (entire board)")
