@@ -1,34 +1,54 @@
 ** Drc report for nrf52840_pmw3360.kicad_pcb **
-** Created on 2026-03-21T16:59:27 **
+** Created on 2026-03-24T10:18:49 **
 ** Report includes: Errors, Warnings **
 
-** Found 5 DRC violations **
+** Found 11 DRC violations **
 [tracks_crossing]: Tracks crossing
     Local override; error
-    @(151.7300 mm, 114.2100 mm): Track [GND] on B.Cu, length 15.4600 mm
-    @(143.0000 mm, 86.2700 mm): Track [MOTION] on B.Cu, length 27.9400 mm
-[tracks_crossing]: Tracks crossing
+    @(147.5000 mm, 99.0000 mm): Track [GND] on F.Cu, length 15.2100 mm
+    @(139.0000 mm, 109.1300 mm): Track [VCC] on F.Cu, length 12.7300 mm
+[shorting_items]: ２つのネットを短絡するアイテム (ネット GND と )
     Local override; error
-    @(145.5000 mm, 99.0000 mm): Track [BATIN] on B.Cu, length 17.7500 mm
-    @(151.7300 mm, 114.2100 mm): Track [GND] on B.Cu, length 15.4600 mm
-[tracks_crossing]: Tracks crossing
+    @(136.2700 mm, 93.8900 mm): Track [GND] on F.Cu, length 19.1100 mm
+    @(136.2700 mm, 98.9700 mm): PTH pad 5 [<no net>] of U1
+[shorting_items]: ２つのネットを短絡するアイテム (ネット  と GND)
     Local override; error
-    @(151.7300 mm, 114.2100 mm): Track [GND] on B.Cu, length 15.4600 mm
-    @(144.0000 mm, 97.7000 mm): Track [NCS] on B.Cu, length 17.8000 mm
-[tracks_crossing]: Tracks crossing
-    Local override; error
-    @(151.7300 mm, 114.2100 mm): Track [GND] on B.Cu, length 15.4600 mm
-    @(143.0000 mm, 114.2100 mm): Track [MOTION] on B.Cu, length 6.7300 mm
-[solder_mask_bridge]: 異なるネットのアイテムが裏面ハンダマスクのアパーチャで接続されている
+    @(136.2700 mm, 88.8100 mm): PTH pad 1 [<no net>] of U1
+    @(137.0000 mm, 86.2700 mm): Track [GND] on F.Cu, length 7.6200 mm
+[solder_mask_bridge]: 異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている
     Rule: 基板セットアップのハンダマスクの最小幅; error
-    @(151.7300 mm, 114.2100 mm): Track [GND] on B.Cu, length 15.4600 mm
-    @(136.2700 mm, 114.2100 mm): PTH pad 11 [MOTION] of U1
+    @(136.2700 mm, 93.8900 mm): Track [GND] on F.Cu, length 19.1100 mm
+    @(136.2700 mm, 101.5100 mm): PTH pad 6 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(137.0000 mm, 86.2700 mm): Track [GND] on F.Cu, length 7.6200 mm
+    @(136.2700 mm, 88.8100 mm): PTH pad 1 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(136.2700 mm, 93.8900 mm): Track [GND] on F.Cu, length 19.1100 mm
+    @(136.2700 mm, 104.0500 mm): PTH pad 7 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(136.2700 mm, 93.8900 mm): Track [GND] on F.Cu, length 19.1100 mm
+    @(136.2700 mm, 106.5900 mm): PTH pad 8 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(137.0000 mm, 86.2700 mm): Track [GND] on F.Cu, length 7.6200 mm
+    @(136.2700 mm, 91.3500 mm): PTH pad 2 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(136.2700 mm, 93.8900 mm): Track [GND] on F.Cu, length 19.1100 mm
+    @(136.2700 mm, 109.1300 mm): PTH pad 9 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(136.2700 mm, 93.8900 mm): Track [GND] on F.Cu, length 19.1100 mm
+    @(136.2700 mm, 111.6700 mm): PTH pad 10 [<no net>] of U1
+[solder_mask_bridge]: 異なるネットのアイテムが表面ハンダマスクのアパーチャで接続されている
+    Rule: 基板セットアップのハンダマスクの最小幅; error
+    @(136.2700 mm, 93.8900 mm): Track [GND] on F.Cu, length 19.1100 mm
+    @(136.2700 mm, 98.9700 mm): PTH pad 5 [<no net>] of U1
 
-** Found 1 unconnected pads **
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(135.0000 mm, 85.0000 mm): Zone [GND] on B.Cu, priority 0
-    @(135.0000 mm, 85.0000 mm): Zone [GND] on B.Cu, priority 0
+** Found 0 unconnected pads **
 
 ** Found 0 Footprint errors **
 
