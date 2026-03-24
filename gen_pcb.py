@@ -348,13 +348,24 @@ def traces():
     segs.append(s(mot_x, J1_Y, mot_x, mot_y, 7, "B.Cu"))   # vertical down
     segs.append(s(mot_x, mot_y, U1_LEFT_X, mot_y, 7, "B.Cu"))  # left
 
-    # ── GND bus: U1L pad3(y=8.89) ↔ pad4(y=11.43) on B.Cu ────────────────
-    # Explicit trace ensures connectivity independent of zone fill
-    gnd_pads = [n for n in range(1, 13) if U1_LEFT_NETS[n] == 1]
-    for i in range(len(gnd_pads) - 1):
-        ya = u1_y(gnd_pads[i])
-        yb = u1_y(gnd_pads[i + 1])
-        segs.append(s(U1_LEFT_X, ya, U1_LEFT_X, yb, 1, "B.Cu", W_PWR))
+    # ── GND: explicit F.Cu traces connecting all GND pads ─────────────────
+    # B.Cu MOTION/NCS/BATIN traces split zone into islands → route on F.Cu
+
+    # J1 pin1(2.0,1.27) → pad3(1.27,8.89)  [x=2.0 corridor, clear of all F.Cu]
+    segs.append(s(j1_x(1), J1_Y, j1_x(1), u1_y(3), 1, w=W_PWR))
+    segs.append(s(j1_x(1), u1_y(3), U1_LEFT_X, u1_y(3), 1, w=W_PWR))
+
+    # pad3(1.27,8.89) → pin23(16.73,29.21)  [down x=1.27, across y=28.0]
+    segs.append(s(U1_LEFT_X, u1_y(3), U1_LEFT_X, 28.0, 1, w=W_PWR))
+    segs.append(s(U1_LEFT_X, 28.0, U1_RIGHT_X, 28.0, 1, w=W_PWR))
+    segs.append(s(U1_RIGHT_X, 28.0, U1_RIGHT_X, u1_y(11), 1, w=W_PWR))
+
+    # J2 pin2(12.5,14.0) → pin23(16.73,29.21)  [down x=12.5, then right y=29.21]
+    segs.append(s(j2_x(2), J2_Y, j2_x(2), u1_y(11), 1, w=W_PWR))
+    segs.append(s(j2_x(2), u1_y(11), U1_RIGHT_X, u1_y(11), 1, w=W_PWR))
+
+    # pad3(1.27,8.89) ↔ pad4(1.27,11.43)  [B.Cu, avoids F.Cu congestion]
+    segs.append(s(U1_LEFT_X, u1_y(3), U1_LEFT_X, u1_y(4), 1, "B.Cu", W_PWR))
 
     return "".join(segs)
 
@@ -492,9 +503,6 @@ def generate():
 
     # ── Traces ───────────────────────────────────────────────────────────────
     parts.append(traces())
-
-    # ── GND zone ─────────────────────────────────────────────────────────────
-    parts.append(gnd_zone())
 
     # ── Silkscreen ───────────────────────────────────────────────────────────
     parts.append(silkscreen())
