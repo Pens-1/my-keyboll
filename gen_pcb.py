@@ -348,23 +348,28 @@ def traces():
     segs.append(s(mot_x, J1_Y, mot_x, mot_y, 7, "B.Cu"))   # vertical down
     segs.append(s(mot_x, mot_y, U1_LEFT_X, mot_y, 7, "B.Cu"))  # left
 
-    # ── GND: explicit F.Cu traces connecting all GND pads ─────────────────
-    # B.Cu MOTION/NCS/BATIN traces split zone into islands → route on F.Cu
+    # ── GND: backbone at x=2.8 (clears U1L pads @x=1.27 and VCC @x=4.0) ──
+    GX = 2.8   # backbone x: 1.53mm from U1L pads, 1.2mm from VCC trace
 
-    # J1 pin1(2.0,1.27) → pad3(1.27,8.89)  [x=2.0 corridor, clear of all F.Cu]
-    segs.append(s(j1_x(1), J1_Y, j1_x(1), u1_y(3), 1, w=W_PWR))
-    segs.append(s(j1_x(1), u1_y(3), U1_LEFT_X, u1_y(3), 1, w=W_PWR))
-
-    # pad3(1.27,8.89) → pin23(16.73,29.21)  [down x=1.27, across y=28.0]
-    segs.append(s(U1_LEFT_X, u1_y(3), U1_LEFT_X, 28.0, 1, w=W_PWR))
-    segs.append(s(U1_LEFT_X, 28.0, U1_RIGHT_X, 28.0, 1, w=W_PWR))
+    # J1 pin1(2.0,1.27) → backbone
+    segs.append(s(j1_x(1), J1_Y, GX, J1_Y, 1, w=W_PWR))
+    # backbone upper: J1 level → pad3 level
+    segs.append(s(GX, J1_Y, GX, u1_y(3), 1, w=W_PWR))
+    # pad3(1.27,8.89) → backbone  [short horizontal, no pad conflicts]
+    segs.append(s(U1_LEFT_X, u1_y(3), GX, u1_y(3), 1, w=W_PWR))
+    # backbone lower: pad3 level → y=28.0  [between U1 row pairs, clears VCC]
+    segs.append(s(GX, u1_y(3), GX, 28.0, 1, w=W_PWR))
+    # horizontal to right column
+    segs.append(s(GX, 28.0, U1_RIGHT_X, 28.0, 1, w=W_PWR))
+    # down to pin23
     segs.append(s(U1_RIGHT_X, 28.0, U1_RIGHT_X, u1_y(11), 1, w=W_PWR))
 
-    # J2 pin2(12.5,14.0) → pin23(16.73,29.21)  [down x=12.5, then right y=29.21]
-    segs.append(s(j2_x(2), J2_Y, j2_x(2), u1_y(11), 1, w=W_PWR))
-    segs.append(s(j2_x(2), u1_y(11), U1_RIGHT_X, u1_y(11), 1, w=W_PWR))
+    # J2 pin2(12.5,14.0) → pin23 via B.Cu (avoids VCC horizontal on F.Cu)
+    segs.append(s(j2_x(2), J2_Y, j2_x(2), 28.0, 1, "B.Cu", W_PWR))
+    segs.append(s(j2_x(2), 28.0, U1_RIGHT_X, 28.0, 1, "B.Cu", W_PWR))
+    segs.append(s(U1_RIGHT_X, 28.0, U1_RIGHT_X, u1_y(11), 1, "B.Cu", W_PWR))
 
-    # pad3(1.27,8.89) ↔ pad4(1.27,11.43)  [B.Cu, avoids F.Cu congestion]
+    # pad3(1.27,8.89) ↔ pad4(1.27,11.43) on B.Cu
     segs.append(s(U1_LEFT_X, u1_y(3), U1_LEFT_X, u1_y(4), 1, "B.Cu", W_PWR))
 
     return "".join(segs)
