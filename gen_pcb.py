@@ -329,9 +329,9 @@ def traces():
     # Route: up to y=30.0 (below NCS which ends at y=30.5), right, down to pin24
     bx1, by1 = j2_x(1), J2_Y           # J2 pin1 (B+) = (11.0, 31.0)
     bx2, by2 = U1_RIGHT_X, u1_y(12)    # U1R pin24 = row index 12 = (16.73, 31.75)
-    segs.append(s(bx1, by1, bx1, 30.5, 8, "B.Cu"))   # up to y=30.5 (clears pin23 pad @y=29.21+0.8=30.01)
-    segs.append(s(bx1, 30.5, bx2, 30.5, 8, "B.Cu"))  # right to x=16.73 (NCS horizontal is x=1.27..9.0)
-    segs.append(s(bx2, 30.5, bx2, by2, 8, "B.Cu"))   # down to pin24
+    segs.append(s(bx1, by1, bx1, 32.2, 8, "B.Cu"))   # down to y=32.2 (below J2 pad2 bottom: 31.0+0.8+0.2+0.125=32.125)
+    segs.append(s(bx1, 32.2, bx2, 32.2, 8, "B.Cu"))  # right to x=16.73 (board bottom clearance: 33.0-32.2-0.125=0.675mm)
+    segs.append(s(bx2, 32.2, bx2, by2, 8, "B.Cu"))   # up to pin24 (pin23 GND is at y=29.21, no conflict)
 
     # ── NCS: J1[8]=(16.0,1.27) → U1L12=(1.27,31.75)  [B.Cu] ──────────────
     # Route: left from J1[8], down between rows, left below MOTION, down to pin12
