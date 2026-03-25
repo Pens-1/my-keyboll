@@ -397,7 +397,7 @@ def silkscreen():
     ox, oy = ORIGIN_X, ORIGIN_Y
     parts = []
     # Board title
-    parts.append(gr_text("nRF52840+PMW3360", ox + W/2, oy + H - 1.5, layer="F.Fab", size=0.8))
+    parts.append(gr_text("nRF52840+PMW3610", ox + W/2, oy + H - 1.5, layer="F.Fab", size=0.8))
     return "".join(parts)
 
 
@@ -410,8 +410,8 @@ def generate():
   (general (thickness 1.6))
   (paper "A4")
   (title_block
-    (title "nRF52840 + PMW3360 PCB (Pro Micro form factor)")
-    (date "2026-03-21")
+    (title "nRF52840 + PMW3610 PCB (Pro Micro form factor)")
+    (date "2026-03-25")
     (rev "1.0")
     (comment 1 "Board size: {W}mm x {H}mm")
     (comment 2 "SPI: MOSI=P0.10 MISO=P1.11 SCK=P1.13 NCS=P1.06 MOTION=P1.04")
@@ -518,7 +518,7 @@ def generate():
 
 
 if __name__ == "__main__":
-    output_path = "/home/user/repos/make-keybord/nrf52840_pmw3360.kicad_pcb"
+    output_path = "/home/user/repos/make-keybord/nrf52840_pmw3610.kicad_pcb"
     content = generate()
     with open(output_path, "w") as f:
         f.write(content)

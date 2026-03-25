@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-nRF52840 (SuperMini) + PMW3360 Breakout KiCad Schematic Generator
+nRF52840 (SuperMini) + PMW3610 KiCad Schematic Generator
 
 Pin mapping:
   SuperMini nRF52840:
@@ -10,18 +10,18 @@ Pin mapping:
                P1.15, AIN0(P0.02), AIN5(P0.29), AIN7(P0.31),
                VCC, RST, GND, BATIN(P0.04)
 
-  PMW3360 Breakout (8-pin):
+  PMW3610 (8-pin, 3.3V direct operation, no LDO required):
     1:GND  2:VCC  3:NC  4:MOTION  5:SCLK  6:MOSI  7:MISO  8:CS
 
   Battery connector J2 (2-pin JST-PH):
     1:B+  2:B-
 
 SPI connections:
-  MOSI  : SuperMini pin14 (P0.10)  → PMW3360 pin6
-  MISO  : SuperMini pin15 (P1.11)  → PMW3360 pin7
-  SCK   : SuperMini pin16 (P1.13)  → PMW3360 pin5
-  NCS   : SuperMini pin12 (P1.06)  → PMW3360 pin8
-  MOTION: SuperMini pin11 (P1.04)  → PMW3360 pin4
+  MOSI  : SuperMini pin14 (P0.10)  → PMW3610 pin6
+  MISO  : SuperMini pin15 (P1.11)  → PMW3610 pin7
+  SCK   : SuperMini pin16 (P1.13)  → PMW3610 pin5
+  NCS   : SuperMini pin12 (P1.06)  → PMW3610 pin8
+  MOTION: SuperMini pin11 (P1.04)  → PMW3610 pin4
 
 Battery connections:
   B+    : J2 pin1  → SuperMini pin24 (BATIN/P0.04) via BATIN net
@@ -141,8 +141,8 @@ def lib_supermini():
     return "".join(lines)
 
 
-def lib_pmw3360():
-    """Define PMW3360 Breakout connector symbol."""
+def lib_pmw3610():
+    """Define PMW3610 connector symbol (3.3V direct, pin-compatible with PMW3360)."""
     bh = J1_Y0 + J1_STEP / 2
     px = J1_PX
 
@@ -158,15 +158,15 @@ def lib_pmw3360():
     ]
 
     lines = []
-    lines.append('    (symbol "PMW3360_Breakout"\n')
+    lines.append('    (symbol "PMW3610"\n')
     lines.append('      (in_bom yes) (on_board yes)\n')
     lines.append('      (property "Reference" "J" (at 0 0 0)\n')
     lines.append('        (effects (font (size 1.27 1.27))))\n')
-    lines.append('      (property "Value" "PMW3360_Breakout" (at 0 -2.54 0)\n')
+    lines.append('      (property "Value" "PMW3610" (at 0 -2.54 0)\n')
     lines.append('        (effects (font (size 1.27 1.27))))\n')
     lines.append('      (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical" (at 0 -5.08 0)\n')
     lines.append('        (effects (font (size 1.27 1.27)) (hide yes)))\n')
-    lines.append('      (symbol "PMW3360_Breakout_0_1"\n')
+    lines.append('      (symbol "PMW3610_0_1"\n')
     lines.append(f'        (rectangle (start {-J1_BW:.4f} {-bh:.4f}) (end {J1_BW:.4f} {bh:.4f})\n')
     lines.append('          (stroke (width 0)) (fill (type background)))\n')
 
@@ -259,17 +259,17 @@ def instance_supermini(x, y):
 """
 
 
-def instance_pmw3360(x, y):
-    """Place PMW3360 Breakout J1 on the schematic."""
+def instance_pmw3610(x, y):
+    """Place PMW3610 J1 on the schematic."""
     bh = J1_Y0 + J1_STEP / 2
     ref_y = y - bh - 2.0
     val_y = y + bh + 1.5
-    return f"""  (symbol (lib_id "PMW3360_Breakout") (at {x:.4f} {y:.4f} 0) (unit 1)
+    return f"""  (symbol (lib_id "PMW3610") (at {x:.4f} {y:.4f} 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid "{uid()}")
     (property "Reference" "J1" (at {x:.4f} {ref_y:.4f} 0)
       (effects (font (size 1.27 1.27))))
-    (property "Value" "PMW3360_Breakout" (at {x:.4f} {val_y:.4f} 0)
+    (property "Value" "PMW3610" (at {x:.4f} {val_y:.4f} 0)
       (effects (font (size 1.27 1.27))))
     (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical" (at {x:.4f} {y:.4f} 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
@@ -356,11 +356,11 @@ def generate():
     parts.append(f"""(kicad_sch (version 20230121) (generator eeschema)
   (paper "A4")
   (title_block
-    (title "nRF52840 + PMW3360 Trackball Interface")
-    (date "2026-03-21")
+    (title "nRF52840 + PMW3610 Trackball Interface")
+    (date "2026-03-25")
     (rev "1.0")
     (comment 1 "SuperMini nRF52840 (nice!nano v2 compatible)")
-    (comment 2 "PMW3360 Breakout Board (monkeypad/pmw3360-breakout)")
+    (comment 2 "PMW3610 (3.3V direct operation, no LDO required)")
     (comment 3 "SPI: MOSI=P0.10  MISO=P1.11  SCK=P1.13  NCS=P1.06")
     (comment 4 "MOTION=P1.04  VCC=3.3V from SuperMini pin21  BAT+=BATIN/P0.04")
   )
@@ -369,7 +369,7 @@ def generate():
     # ── lib_symbols ──────────────────────────────────────────────────────────
     parts.append("  (lib_symbols\n")
     parts.append(lib_supermini())
-    parts.append(lib_pmw3360())
+    parts.append(lib_pmw3610())
     parts.append(lib_battery_connector())
     parts.append(lib_power_vcc())
     parts.append(lib_power_gnd())
@@ -377,7 +377,7 @@ def generate():
 
     # ── Component instances ──────────────────────────────────────────────────
     parts.append(instance_supermini(U1_X, U1_Y))
-    parts.append(instance_pmw3360(J1_X, J1_Y))
+    parts.append(instance_pmw3610(J1_X, J1_Y))
     parts.append(instance_battery(J2_X, J2_Y))
 
     # ── Power symbols & wires for VCC ────────────────────────────────────────
@@ -501,7 +501,7 @@ def generate():
 
 
 if __name__ == "__main__":
-    output_path = "/home/user/repos/make-keybord/nrf52840_pmw3360.kicad_sch"
+    output_path = "/home/user/repos/make-keybord/nrf52840_pmw3610.kicad_sch"
     content = generate()
     with open(output_path, "w") as f:
         f.write(content)
