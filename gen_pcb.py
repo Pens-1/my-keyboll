@@ -14,7 +14,7 @@ Layout:
 
   x=1.27  ── left socket row  (pins 1-12)
   x=16.73 ── right socket row (pins 13-24)
-  J2 battery connector: between rows at (8.0, 20.0) & (10.0, 20.0)
+  J2 battery connector: bottom of board at (11.0, 31.0) & (13.0, 31.0)
 
 Routing strategy:
   B.Cu zone  : GND copper fill (entire board → connects all GND pads)
@@ -110,11 +110,11 @@ def j1_x(n):
     return J1_X0 + (n - 1) * J1_PITCH
 
 # ─── J2 (2-pin JST-PH battery) ──────────────────────────────────────────────
-# Placed between SCK(x=10) and MOSI(x=12) traces, below their vertical sections
-# pin1(B+) at x=10.5, pin2(B-) at x=12.5, y=14.0mm
+# Placed at bottom of board (outside nRF52840 module area) to avoid interference
+# pin1(B+) at x=11.0 (BATIN), pin2(B-) at x=13.0 (GND), y=31.0mm
 J2_PITCH = 2.0          # JST-PH 2mm pitch
-J2_CX    = 11.5         # centre x: between SCK(10.0) and MOSI(12.0) trace columns
-J2_Y     = 14.0         # y: below all vertical F.Cu trace ends (SCK ends at y=11.43)
+J2_CX    = 12.0         # centre x: clear of all signal traces
+J2_Y     = 31.0         # y: bottom of board, outside nRF52840 module overhead
 
 def j2_x(n):            # n=1 (B+), n=2 (B-)
     return J2_CX + (n - 1.5) * J2_PITCH   # pin1=3.5mm, pin2=5.5mm
@@ -245,28 +245,29 @@ def fp_j2():
     lines.append(f'(footprint "Connector_JST_PH_2pin" (layer "F.Cu") '
                  f'(at {ORIGIN_X:.4f} {ORIGIN_Y:.4f}) (uuid "{uid()}")\n')
     lines.append(fp_text("reference", "J2", cx, J2_Y - 2.0, layer="F.Fab"))
-    lines.append(fp_text("value", "Battery_JST-PH", cx, J2_Y + 2.0, layer="F.Fab"))
+    lines.append(fp_text("value", "Battery_JST-PH", cx, J2_Y - 3.5, layer="F.Fab"))
 
     # JST-PH through-hole: 0.8mm drill, 1.6mm pad
     lines.append(thru_pad("1", j2_x(1), J2_Y, J2_NETS[1], drill=0.8, pad_d=1.6, shape="oval"))
     lines.append(thru_pad("2", j2_x(2), J2_Y, J2_NETS[2], drill=0.8, pad_d=1.6, shape="circle"))
 
-    # Silkscreen + F.CrtYd
+    # F.CrtYd only (silkscreen on F.Fab to avoid overlap with U1 outline)
     x1, x2 = j2_x(1) - 1.2, j2_x(2) + 1.2
-    y1, y2 = J2_Y - 1.2, J2_Y + 1.2
+    y1 = J2_Y - 1.2
+    y2 = min(H - 0.3, J2_Y + 1.2)
     cyd_m = 0.25
     for (ax, ay, bx, by) in [
         (x1-cyd_m, y1-cyd_m, x2+cyd_m, y1-cyd_m),
-        (x2+cyd_m, y1-cyd_m, x2+cyd_m, y2+cyd_m),
-        (x2+cyd_m, y2+cyd_m, x1-cyd_m, y2+cyd_m),
-        (x1-cyd_m, y2+cyd_m, x1-cyd_m, y1-cyd_m),
+        (x2+cyd_m, y1-cyd_m, x2+cyd_m, min(H-0.05, y2+cyd_m)),
+        (x2+cyd_m, min(H-0.05, y2+cyd_m), x1-cyd_m, min(H-0.05, y2+cyd_m)),
+        (x1-cyd_m, min(H-0.05, y2+cyd_m), x1-cyd_m, y1-cyd_m),
     ]:
         lines.append(fp_line(ax, ay, bx, by, layer="F.CrtYd", w=0.05))
     for (ax, ay, bx, by) in [
         (x1, y1, x2, y1), (x2, y1, x2, y2),
         (x2, y2, x1, y2), (x1, y2, x1, y1)
     ]:
-        lines.append(fp_line(ax, ay, bx, by))
+        lines.append(fp_line(ax, ay, bx, by, layer="F.Fab"))
     lines.append(fp_text("user", "B+", j2_x(1), J2_Y - 2.0, layer="F.Fab", size=0.8))
     lines.append(fp_text("user", "B-", j2_x(2), J2_Y - 2.0, layer="F.Fab", size=0.8))
 
@@ -324,12 +325,13 @@ def traces():
     segs.append(s(vx1, vy1, vx1, vy2, 2, w=W_PWR))
     segs.append(s(vx1, vy2, vx2, vy2, 2, w=W_PWR))
 
-    # ── BATIN: J2[1]=(10.5,14.0) → U1R24=(16.73,31.75)  [B.Cu] ────────────
-    # B.Cu avoids crossing VCC horizontal trace (F.Cu at y=24.13)
-    bx1, by1 = j2_x(1), J2_Y           # J2 pin1 (B+)
-    bx2, by2 = U1_RIGHT_X, u1_y(12)    # U1R pin24 = row index 12
-    segs.append(s(bx1, by1, bx1, by2, 8, "B.Cu"))   # vertical down
-    segs.append(s(bx1, by2, bx2, by2, 8, "B.Cu"))   # horizontal right
+    # ── BATIN: J2[1]=(11.0,31.0) → U1R24=(16.73,31.75)  [B.Cu] ────────────
+    # Route: up to y=30.0 (below NCS which ends at y=30.5), right, down to pin24
+    bx1, by1 = j2_x(1), J2_Y           # J2 pin1 (B+) = (11.0, 31.0)
+    bx2, by2 = U1_RIGHT_X, u1_y(12)    # U1R pin24 = row index 12 = (16.73, 31.75)
+    segs.append(s(bx1, by1, bx1, 30.0, 8, "B.Cu"))   # up to y=30.0 (NCS ends at y=30.5)
+    segs.append(s(bx1, 30.0, bx2, 30.0, 8, "B.Cu"))  # right to x=16.73
+    segs.append(s(bx2, 30.0, bx2, by2, 8, "B.Cu"))   # down to pin24
 
     # ── NCS: J1[8]=(16.0,1.27) → U1L12=(1.27,31.75)  [B.Cu] ──────────────
     # Route: left from J1[8], down between rows, left below MOTION, down to pin12
@@ -364,10 +366,8 @@ def traces():
     # down to pin23
     segs.append(s(U1_RIGHT_X, 28.0, U1_RIGHT_X, u1_y(11), 1, w=W_PWR))
 
-    # J2 pin2(12.5,14.0) → pin23 via B.Cu (avoids VCC horizontal on F.Cu)
-    segs.append(s(j2_x(2), J2_Y, j2_x(2), 28.0, 1, "B.Cu", W_PWR))
-    segs.append(s(j2_x(2), 28.0, U1_RIGHT_X, 28.0, 1, "B.Cu", W_PWR))
-    segs.append(s(U1_RIGHT_X, 28.0, U1_RIGHT_X, u1_y(11), 1, "B.Cu", W_PWR))
+    # J2 pin2(13.0,31.0) → GND backbone at y=28.0 via F.Cu (no B.Cu crossing needed)
+    segs.append(s(j2_x(2), J2_Y, j2_x(2), 28.0, 1, w=W_PWR))
 
     # pad3(1.27,8.89) ↔ pad4(1.27,11.43) on B.Cu
     segs.append(s(U1_LEFT_X, u1_y(3), U1_LEFT_X, u1_y(4), 1, "B.Cu", W_PWR))
